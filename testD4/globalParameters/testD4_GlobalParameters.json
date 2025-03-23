@@ -1,0 +1,6 @@
+{
+	"PipelineLock": {
+		"type": "string",
+		"value": "Unlocked"
+	}
+}
