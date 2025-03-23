@@ -1,0 +1,27 @@
+{
+	"name": "JsonLock",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage_Manual",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "lock.json",
+				"fileSystem": "day9"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"LockStatus": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
