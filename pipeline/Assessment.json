@@ -235,6 +235,100 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 10
+							}
+						},
+						{
+							"name": "Copy data3",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Wait1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "ReplaceVal1",
+											"value": {
+												"value": "@variables('Falsevar')",
+												"type": "Expression"
+											}
+										}
+									],
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": false,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "ReplaceVal1",
+												"type": "String"
+											},
+											"sink": {
+												"path": "$['LockStatus']"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DelimitedText6",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "JsonLock",
+									"type": "DatasetReference"
+								}
+							]
 						}
 					]
 				}
@@ -242,14 +336,16 @@
 		],
 		"variables": {
 			"Truevar": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "Locked"
 			},
 			"Falsevar": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "UnLocked"
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2025-03-24T09:57:59Z"
+		"lastPublishTime": "2025-03-25T10:49:31Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
