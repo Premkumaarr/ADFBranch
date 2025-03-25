@@ -61,86 +61,11 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "Falsevar",
-								"value": "UnLocked"
+								"value": {
+									"value": "@activity('Lookup1').output.firstRow.LockStatus",
+									"type": "Expression"
+								}
 							}
-						},
-						{
-							"name": "Copy data2",
-							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "Set variable2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"additionalColumns": [
-										{
-											"name": "ReplaceVal1",
-											"value": {
-												"value": "@variables('Falsevar')",
-												"type": "Expression"
-											}
-										}
-									],
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
-								},
-								"sink": {
-									"type": "JsonSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "JsonWriteSettings"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"mappings": [
-										{
-											"source": {
-												"name": "ReplaceVal1",
-												"type": "String"
-											},
-											"sink": {
-												"path": "$['LockStatus']"
-											}
-										}
-									]
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "DelimitedText6",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "JsonLock",
-									"type": "DatasetReference"
-								}
-							]
 						}
 					],
 					"ifTrueActivities": [
